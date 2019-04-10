@@ -1,21 +1,18 @@
 chrome.runtime.onMessage.addListener(receiver);
 
-// Callback for when a message is received
 function receiver(request, sender, sendResponse) {
 	if (request.message === "user clicked!") {
 		
 	  	var textContent = document.body.innerText;
+	  	var words = new Set(textContent.split(" "));
 		var vervs = "";
 
-		for(word of new Set(textContent.split(" "))) {
+		for(word of words) {
 			if(word.endsWith("।")) {
-
 				word = word.slice(0,-1);
-
 				if (window.confirm(word)) {
 					vervs+= word + " ";
 				}
-				
 			}
 		}
 		console.log(vervs);
