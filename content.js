@@ -1,93 +1,57 @@
-chrome.runtime.onMessage.addListener(receiver);
+$(function () {
+	chrome.runtime.onMessage.addListener(receiver);
+	// var server = 'http://40.117.123.41:3000';
+	var server = "https://65feb62a.ngrok.io";
+
+	// Checking Unicode Value
+	function isBanglaWord(word) {
+		for (var index = 0; index < word.length; index++) {
+			var val = word.charCodeAt(index);
+			if (val > 2559 || val < 2458) {
+				return false;
+			}
+		}
+		return true;
+	}
 
 
-// Checking Unicode Value
+	function receiver(request, sender, sendResponse) {
+		if (request.message === "user clicked!") {
+			var textContent = document.body.innerText;
+			var splittedWords = textContent.split(/[ \t\n,!'"`’;।:={}\[\]\\\^\$\.\|\?\*\+\(\)১২৩৪৫৬৭৮৯০]/);
 
+			var shapedWords = new Set();
 
-function isBanglaWord(word) {
+			for (word of splittedWords) {
+				word = word.trim();
+				if (isBanglaWord(word) && word) {
+					shapedWords.add(word);
+				}
+			}
 
-	for (var index = 0; index < word.length; index++) {
-		var val = word.charCodeAt(index);
+			var uniqueWords = [...shapedWords];
+			console.log(uniqueWords);
 
-		if(val > 2559 || val < 2458) {
-			return false;
+			for (word of uniqueWords) {
+				let data = {
+					"word": word
+				};
+
+				$.ajax({
+					url: server + '/api/words',
+					type: 'POST',
+					contentType: 'application/json; charset=utf-8',
+					data: JSON.stringify(data),
+					success: function (data, textStatus, jQxhr) {
+						console.log("Upload Successful");
+					},
+					error: function (jqXhr, textStatus, errorThrown) {
+						console.log("Upload Failed");
+					}
+				});
+
+			}
+
 		}
 	}
-
-	return true;
-
-
-}
-
-function getWithoutStopMark(word) {
-
-	var stopMarks = ["!",",","’","?",";","।",":"];
-
-	if(word.startsWith("‘")) {
-		word = word.slice(1,);
-	}
-
-	for(ch of stopMarks) {
-		if(word.endsWith(ch)){
-			return word.slice(0,-1);
-		}
-	}
-
-	return word;
-}
-
-
-
-
-
-
-
-function receiver(request, sender, sendResponse) {
-	if (request.message === "user clicked!") {
-		
-	  	var textContent = document.body.innerText;
-	  	var splittedWords = textContent.split(/[\t\n (){}]/);
-
-	  	var shapedWord = new Set();
-	  	
-
-	  	for(word of splittedWords) {
-	  		word = word.trim();
-
-	  		if(isBanglaWord(word) && word) {
-	  			shapedWord.add(getWithoutStopMark(word));
-	  		}
-	  	}
-	  	console.log(shapedWord);
-	}
-}
-
-
-// var textContent = document.body.innerText;
-// var vervs = "";
-
-// for(word of new Set(textContent.split(" "))) {
-// 	if(word.endsWith("।")) {
-
-// 		word = word.slice(0,-1);
-
-// 		if (window.confirm(word)) {
-// 			vervs+= word + " ";
-// 		}
-		
-// 	}
-// }
-
-// console.log(vervs);
-
-
-// console.log("hi,facebook");
-
-
-// if( window.location.href === "https://www.facebook.com/") {
-// 	if(window.confirm("Do you really want to Stay here?")) {
-
-// 	} else{
-// 		window.location.assign("https://www.google.com/");
-// 	}
-// }
+})
