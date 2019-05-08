@@ -1,7 +1,6 @@
 $(function () {
 	chrome.runtime.onMessage.addListener(receiver);
-	// var server = 'http://40.117.123.41:3000';
-	var server = "https://65feb62a.ngrok.io";
+	var server = "https://www.connectapp.ml";
 
 	// Checking Unicode Value
 	function isBanglaWord(word) {
