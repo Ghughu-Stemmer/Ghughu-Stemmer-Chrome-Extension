@@ -11,8 +11,10 @@
     }
   ],
   "permissions": [
-    "https://*/",
-    "https://*/*"
+    "https://connectapp.ml/",
+    "https://www.connectapp.ml/",
+    "https://connectapp.ml/*",
+    "https://www.connectapp.ml/*"
   ],
   "browser_action": {
     "default_icon": "icon.png"
