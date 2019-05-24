@@ -1,5 +1,4 @@
 $(function () {
-	chrome.runtime.onMessage.addListener(receiver);
 	var server = "https://www.connectapp.ml";
 
 	// Checking Unicode Value
@@ -62,14 +61,6 @@ $(function () {
 				}
 			});
 
-		}
-	}
-
-
-	function receiver(request, sender, sendResponse) {
-		if (request.message === "user clicked!") {
-			console.log("clicked");
-			run();
 		}
 	}
 

@@ -7,14 +7,15 @@
       "matches": [
         "<all_urls>"
       ],
-      "js": ["jquery-3.4.1.min.js","content.js"]
+      "js": ["jquery-3.4.1.min.js","content.js", "crawler.js"]
     }
   ],
   "permissions": [
     "https://connectapp.ml/",
     "https://www.connectapp.ml/",
     "https://connectapp.ml/*",
-    "https://www.connectapp.ml/*"
+    "https://www.connectapp.ml/*",
+    "storage"
   ],
   "browser_action": {
     "default_icon": "icon.png"
