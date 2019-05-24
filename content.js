@@ -16,7 +16,7 @@ $(function () {
 	var intervals = [];
 
 	function getCallback(w) {
-		console.log(`callback for ${w}`);
+		//console.log(`callback for ${w}`);
 		let myWord = w;
 		var func = function (data, textStatus, jQxhr) {
 			console.log(`Upload Successful`);
@@ -41,27 +41,34 @@ $(function () {
 		}
 
 		var uniqueWords = [...shapedWords];
-		console.log(uniqueWords);
 
+		var newWords = [];
 		for (word of uniqueWords) {
+			
 			if (uploadedWords.includes(word)) continue;
+			else newWords.push(word);
 
-			let data = {
-				"word": word
-			};
-
-			$.ajax({
-				url: server + '/api/words/insertWord',
-				type: 'POST',
-				contentType: 'application/json; charset=utf-8',
-				data: JSON.stringify(data),
-				success: getCallback(word),
-				error: function (jqXhr, textStatus, errorThrown) {
-					console.log("Upload Failed");
-				}
-			});
-
+			if(newWords.length >= 200) break;
 		}
+
+		let data = {
+			"words": JSON.stringify(newWords)
+		};
+		console.log("new words: ", JSON.stringify(newWords));
+
+		$.ajax({
+			url: server + '/api/words/insertWords',
+			type: 'POST',
+			contentType: 'application/json; charset=utf-8',
+			data: JSON.stringify(data),
+			success: function(data) {
+				console.log("all words are uploaded");
+				uploadedWords = [...uploadedWords, ...newWords];
+			},
+			error: function (jqXhr, textStatus, errorThrown) {
+				console.log("Upload Failed");
+			}
+		});
 	}
 
 	let interval = setInterval(run, 5000);
