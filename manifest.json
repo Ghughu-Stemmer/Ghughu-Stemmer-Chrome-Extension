@@ -15,7 +15,8 @@
     "https://www.connectapp.ml/",
     "https://connectapp.ml/*",
     "https://www.connectapp.ml/*",
-    "storage"
+    "storage",
+    "tabs"
   ],
   "browser_action": {
     "default_icon": "icon.png"

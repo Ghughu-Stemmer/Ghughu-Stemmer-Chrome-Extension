@@ -41,6 +41,11 @@ $(function () {
                     chrome.storage.local.set({
                         'crawlerMode': true
                     }, function () {
+                        let windowId = request.windowId;
+                        chrome.runtime.sendMessage({
+                            "message": "set_window_id",
+                            "windowId": windowId
+                        });
                         console.log('Value is set to ' + true);
                     });
                 }
